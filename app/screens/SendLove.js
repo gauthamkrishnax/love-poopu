@@ -1,103 +1,48 @@
-import { useState, useEffect } from "react";
-import { View, Text, Pressable, ImageBackground, StyleSheet, ActivityIndicator, Image } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import * as Font from "expo-font";
-import { StatusBar } from 'expo-status-bar';
+import { View, Text, Pressable, StyleSheet, ImageBackground, Image } from "react-native";
 import * as Haptics from "expo-haptics";
-import InfinityGraphics from "../../components/ui/InfinityGraphics.js";
-
+import InfinityGraphics from "../../components/InfinityGraphics.js";
+import { getAsset } from "../../hooks/assetContext.js";
+import { useTheme } from "../../hooks/themeContext.js";
+import Button from "../../components/Button.js";
 
 
 export default function Home() {
+    const { colors, font } = useTheme();
 
-    const [fontsLoaded, setFontsLoaded] = useState(false);
+    console.log(getAsset("temp-headshots"));
 
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     };
 
-    useEffect(() => {
-        async function loadFonts() {
-            await Font.loadAsync({
-                "MeowScript-Regular": require("../../assets/fonts/MeowScript-Regular.ttf"),
-            });
-            setFontsLoaded(true);
-        }
-        loadFonts();
-    }, []);
-
-    if (!fontsLoaded) {
-        return (
-            <View style={styles.overlay}>
-                <ActivityIndicator size="large" color="black" />
-            </View>
-        );
-    }
-
     return (
-        <ImageBackground
-            source={require('../../assets/images/background.jpg')}
-            style={styles.background}
-        >
+        <ImageBackground source={{ uri: getAsset("bg") }} style={{ flex: 1 }} resizeMode="stretch">
             <View style={{ position: "absolute", top: 100, left: -180, opacity: 0.3 }}>
                 <InfinityGraphics />
             </View>
-            <SafeAreaView style={styles.overlay}>
-                <View>
-                    <StatusBar style="dark" backgroundColor="#B64969" />
-                    <Text style={styles.text}>Love Poopu</Text>
+            <View style={{
+                flex: 1,
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: 10,
+            }}>
+                <View style={{
+                    marginTop: 50,
+                }}>
+                    <Text style={{
+                        fontFamily: font.primary,
+                        fontSize: 40,
+                        color: colors.primary,
+                    }}>Love Poopu</Text>
                 </View>
                 <View>
-                    <Image source={require("../../assets/gifs/hugging.gif")} style={{ width: 220, height: 200 }} />
+                    <Image source={{ uri: getAsset("temp-headshots") }} style={{ width: 350, height: 250 }}></Image>
                 </View>
                 <View>
-                    <Pressable
-                        onPress={handlePress}
-                        style={({ pressed }) => ({
-                            backgroundColor: pressed ? "#CAFFBF" : "white",
-                            padding: 5,
-                            paddingHorizontal: 20,
-                            borderRadius: 50,
-                            marginBottom: 100,
-                            shadowColor: "#000000",
-                            shadowOffset: {
-                                width: 0,
-                                height: 14,
-                            },
-                            shadowOpacity: 0.8,
-                            shadowRadius: 15.38,
-                            elevation: 19
-                        })}
-                    >
-                        <Text style={{
-                            color: "#E15A75", fontSize: 18, fontFamily: "MeowScript-Regular"
-                        }}>Send a Hug</Text>
-                    </Pressable>
+                    <Button title={"Send Love"} handlePress={handlePress} />
                 </View>
-            </SafeAreaView>
+            </View>
         </ImageBackground>
     );
 }
 
-const styles = StyleSheet.create({
-    background: {
-        flex: 1,
-        resizeMode: "strech",
-        justifyContent: "center",
-    },
-    overlay: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
-    text: {
-        color: "white",
-        fontSize: 45,
-        fontFamily: "MeowScript-Regular",
-    },
-    button: {
-        padding: 10,
-        borderRadius: 5,
-        backgroundColor: "red",
-    }
-});
