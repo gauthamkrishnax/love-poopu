@@ -14,6 +14,8 @@ import Dingolfy from './screens/Dingolfy.js';
 import { ThemeProvider, useTheme } from '../hooks/themeContext.js';
 import { AssetProvider } from '../hooks/assetContext.js';
 
+import { requestPermissions, scheduleRegularNotifications } from '../utils/notificationHandler.js';
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -54,6 +56,18 @@ export default function App() {
         }
 
         loadResourcesAndData();
+
+        const checkNotificationPermissions = async () => {
+            const granted = await requestPermissions();
+            if (granted) {
+                console.log("Notification permissions granted");
+            } else {
+                console.log("Notification permissions denied");
+            }
+        };
+        checkNotificationPermissions();
+
+        scheduleRegularNotifications();
 
     }, [])
 

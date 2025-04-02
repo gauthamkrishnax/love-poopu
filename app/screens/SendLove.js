@@ -4,15 +4,21 @@ import InfinityGraphics from "../../components/InfinityGraphics.js";
 import { getAsset } from "../../hooks/assetContext.js";
 import { useTheme } from "../../hooks/themeContext.js";
 import Button from "../../components/Button.js";
+import { sendLocalNotification } from "../../utils/notificationHandler.js";
+import loveNotifications from "../../constants/Notifications";
 
 
 export default function Home() {
     const { colors, font } = useTheme();
 
-    console.log(getAsset("temp-headshots"));
-
     const handlePress = () => {
+        let message = loveNotifications[Math.floor(Math.random() * loveNotifications.length)];
+
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        const sendNotification = async () => {
+            await sendLocalNotification(love);
+        };
+        sendNotification(message.title, message.body);
     };
 
     return (
