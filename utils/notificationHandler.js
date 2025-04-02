@@ -27,9 +27,7 @@ export async function sendLocalNotification(title, body) {
             title: title,
             body: body,
         },
-        trigger: {
-            seconds: 1, // Delay before the notification is shown
-        },
+        trigger: null,
     });
 }
 
