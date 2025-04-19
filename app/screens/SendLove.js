@@ -6,23 +6,32 @@ import { useTheme } from "../../hooks/themeContext.js";
 import Button from "../../components/Button.js";
 import { sendLocalNotification } from "../../utils/notificationHandler.js";
 import loveNotifications from "../../constants/Notifications";
+import { signOut } from "firebase/auth";
+import { auth } from "../../utils/firebaseConfig.js";
 
 
 export default function Home() {
     const { colors, font } = useTheme();
 
     const handlePress = () => {
-        let message = loveNotifications[Math.floor(Math.random() * loveNotifications.length)];
+        signOut(auth)
+            .then(() => {
+                console.log("User signed out");
+            })
+            .catch((error) => {
+                console.error("Sign out error:", error);
+            });
+        // let message = loveNotifications[Math.floor(Math.random() * loveNotifications.length)];
 
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-        const sendNotification = async () => {
-            await sendLocalNotification(love);
-        };
-        sendNotification(message.title, message.body);
+        // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        // const sendNotification = async () => {
+        //     await sendLocalNotification(love);
+        // };
+        // sendNotification(message.title, message.body);
     };
 
     return (
-        <ImageBackground source={{ uri: getAsset("bg") }} style={{ flex: 1 }} resizeMode="stretch">
+        <ImageBackground source={{ uri: getAsset("background1") }} style={{ flex: 1 }} resizeMode="stretch">
             <View style={{ position: "absolute", top: 100, left: -180, opacity: 0.3 }}>
                 <InfinityGraphics />
             </View>

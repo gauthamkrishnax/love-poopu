@@ -1,7 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import loveNotifications from '../constants/Notifications';
 
-const INTERVAL_MINUTES = 0.5; // Send notification every 2 minutes
+const INTERVAL_MINUTES = 2; // Send notification every 2 minutes
 
 // Request notification permissions
 export async function requestPermissions() {

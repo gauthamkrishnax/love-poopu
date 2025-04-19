@@ -1,10 +1,11 @@
 import { Pressable, Text } from 'react-native';
 import { useTheme } from '../hooks/themeContext.js';
 
-export default function Button({ title, handlePress }) {
+export default function Button({ title, handlePress, disabled, size = 28 }) {
     const { colors, font } = useTheme();
     return (
         <Pressable
+            disabled={disabled}
             onPress={handlePress}
             style={({ pressed }) => ({
                 backgroundColor: pressed ? colors.secondary : colors.teritiary,
@@ -25,7 +26,7 @@ export default function Button({ title, handlePress }) {
             })}
         >
             <Text style={{
-                fontFamily: font.primary, color: colors.primary, fontSize: 28,
+                fontFamily: font.primary, color: colors.primary, fontSize: size,
             }}>{title}</Text>
         </Pressable>
     )
